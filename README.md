@@ -25,5 +25,7 @@ NIU_COUNTRYCODE=49
 then run
 
 docker build -t niu-api .
+
 docker run -it --env-file env niu-api /bin/bash
+
 ./niu-api.py
