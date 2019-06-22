@@ -133,8 +133,11 @@ if __name__ == "__main__":
         print ('  Timestamp:   ', motorInfo['data']['lastTrack']['time'])
         print ('  Distance:    ', motorInfo['data']['lastTrack']['distance'])
         print ('  Riding Time: ', motorInfo['data']['lastTrack']['ridingTime'])
-
-    """
+"""
+    print ('Last Track:  ')
+    print ('  Timestamp:   ', motorInfo['data']['lastTrack']['time'])
+    print ('  Distance:    ', motorInfo['data']['lastTrack']['distance'])
+    print ('  Riding Time: ', motorInfo['data']['lastTrack']['ridingTime'])
     print (motorInfo)
     {'trace': '成功', 'status': 0, 'desc': '成功', 'data': {'ss_protocol_ver': 2,
     'nowSpeed': 0, 'isAccOn': '', 'isConnected': True, 'infoTimestamp':
@@ -151,7 +154,7 @@ if __name__ == "__main__":
     overallTally = post_info('/motoinfo/overallTally', sn, token)
     # print (overallTally)
     print ('Total km:      ', overallTally['data']['totalMileage'])
-    print ('Total km since:', overallTally['data']['bindDaysCount'])
+    print ('Total km since:', overallTally['data']['bindDaysCount'], 'days')
 
     batteryHealth = get_info('/v3/motor_data/battery_info/health', sn, token)
     """
