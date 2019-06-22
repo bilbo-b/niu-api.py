@@ -127,10 +127,13 @@ if __name__ == "__main__":
     print ('centreCtrlBatt:', motorInfo['data']['centreCtrlBattery'])
     print ('Position lat:  ', motorInfo['data']['postion']['lat'])
     print ('Position lng:  ', motorInfo['data']['postion']['lng'])
-    print ('Last Track:  ')
-    print ('  Timestamp:   ', motorInfo['data']['lastTrack']['time'])
-    print ('  Distance:    ', motorInfo['data']['lastTrack']['distance'])
-    print ('  Riding Time: ', motorInfo['data']['lastTrack']['ridingTime'])
+    print ('HDOP:          ', motorInfo['data']['hdop'])
+    if (len(motorInfo['data']['lastTrack'])) != 0:
+        print ('Last Track:  ')
+        print ('  Timestamp:   ', motorInfo['data']['lastTrack']['time'])
+        print ('  Distance:    ', motorInfo['data']['lastTrack']['distance'])
+        print ('  Riding Time: ', motorInfo['data']['lastTrack']['ridingTime'])
+
     """
     print (motorInfo)
     {'trace': '成功', 'status': 0, 'desc': '成功', 'data': {'ss_protocol_ver': 2,
