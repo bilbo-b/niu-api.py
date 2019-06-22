@@ -6,7 +6,7 @@
 import time
 from prometheus_client import start_http_server
 from prometheus_client import Counter, Gauge
-from niu import get_token, get_vehicles, get_info
+from niu import get_token, get_vehicles, get_info, post_info
 port_number = 8777
 
 if __name__ == "__main__":
@@ -19,6 +19,8 @@ if __name__ == "__main__":
     niu_times_charged = Gauge('niu_times_charged', 'number of times the battery has been charged')
     niu_temperature = Gauge('niu_temperature', 'Temperature at the battery in percent')
     niu_battery_grade = Gauge('niu_battery_grade', 'Battery Grade')
+    niu_bindDaysCount = Gauge('niu_bindDaysCount', 'days the vehicle is connected to this account')
+    niu_totalMileage = Gauge('niu_totalMileage', 'Total Mileage in km')
     # Start up the server to expose the metrics.
     start_http_server(port_number)
     # Generate some requests.
@@ -32,6 +34,9 @@ if __name__ == "__main__":
             niu_times_charged.set(batteryInfo['chargedTimes'])
             niu_temperature.set(batteryInfo['temperature'])
             niu_battery_grade.set(batteryInfo['gradeBattery'])
+            overallTally = post_info('/motoinfo/overallTally', sn, token)
+            niu_bindDaysCount.set(overallTally['data']['bindDaysCount'])
+            niu_totalMileage.set(overallTally['data']['totalMileage'])
         except Exception as e:
             print("Caught Error")
             print(e)
@@ -59,7 +64,7 @@ if __name__ == "__main__":
     print ('centreCtrlBatt:', motorInfo['data']['centreCtrlBattery'])
     print ('Position lat:  ', motorInfo['data']['postion']['lat'])
     print ('Position lng:  ', motorInfo['data']['postion']['lng'])
-    print ('Last Track:  ')
+    print ('Lastjkk Track:  ')
     print ('  Timestamp:   ', motorInfo['data']['lastTrack']['time'])
     print ('  Distance:    ', motorInfo['data']['lastTrack']['distance'])
     print ('  Riding Time: ', motorInfo['data']['lastTrack']['ridingTime'])
@@ -75,10 +80,9 @@ if __name__ == "__main__":
     1560976555998, 'distance': 7755, 'ridingTime': 1066},
     'postion': {'lng': 8.703397, 'lat': 50.105606}, 'estimatedMileage': 28}}
 
-    # so erhalte ich "404 not found"
-    # overallTally = get_info('/motoinfo/overallTally', sn, token)
+    # overallTally = post_info('/motoinfo/overallTally', sn, token)
     # print (overallTally)
-
+    # {'desc': 'Success', 'status': 0, 'trace': 'Success', 'data': {'bindDaysCount': 66, 'totalMileage': 352}}
     batteryHealth = get_info('/v3/motor_data/battery_info/health', sn, token)
     # fand ich überwiegend als info nicht spannend
     print (batteryHealth)

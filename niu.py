@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*
 import os
 import requests
 import json
@@ -68,6 +69,29 @@ def get_info(path, sn, token):
     return data
 
 
+def post_info(path, sn, token):
+    url = API_BASE_URL + path
+#    print (url)
+    params = {}
+    headers = {'token': token, 'Accept-Language': 'en-US'}
+    try:
+        r = requests.post(url, headers=headers, params=params, data={'sn':sn})
+#        print (r.content)
+#        print (r.status_code)
+    except ConnectionError as e:
+        print("Caught Error")
+        print(e)
+        return False
+    if r.status_code != 200:
+        return False
+    data = json.loads(r.content.decode())
+    if data['status'] != 0:
+        print (data)
+        return False
+#    data = data['data']['batteries']['compartmentA']
+#    del data['items']
+    return data
+
 if __name__ == "__main__":
     token = get_token()
     sn = get_vehicles(token)
@@ -121,9 +145,10 @@ if __name__ == "__main__":
     'postion': {'lng': 8.703397, 'lat': 50.105606}, 'estimatedMileage': 28}}
     """
 
-    # so erhalte ich "404 not found"
-    # overallTally = get_info('/motoinfo/overallTally', sn, token)
+    overallTally = post_info('/motoinfo/overallTally', sn, token)
     # print (overallTally)
+    print ('Total km:      ', overallTally['data']['totalMileage'])
+    print ('Total km since:', overallTally['data']['bindDaysCount'])
 
     batteryHealth = get_info('/v3/motor_data/battery_info/health', sn, token)
     """
